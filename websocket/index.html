@@ -9,7 +9,7 @@
 	<form action="">
       <input id="m" autocomplete="off" /><button>Send</button>
     </form>
-    <div id="messages"></div>
+    <ul id="messages"></ul>
 	<script src="/socket.io/socket.io.js"></script>
 	<script>
 	  const socket = io();
@@ -24,7 +24,9 @@
 	  });
 
 	  socket.on('broadcastMessage', (msg) => {
-	  	messages.appendChild(document.createTextNode(msg));
+	  	let li = document.createElement('li');
+	  	li.innerText = msg;
+	  	messages.appendChild(li);
 	  });
 
 	</script>
