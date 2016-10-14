@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+	<h1>Hello</h1>
+	<form action="">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+    <div id="messages"></div>
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+	  const socket = io();
+	  const form = document.querySelector('form');
+	  const inputField = document.querySelector('#m');
+	  const messages = document.querySelector('#messages');
+	  form.addEventListener('submit', (event) => {
+	  	socket.emit('chat message', inputField.value);
+	    inputField.value = '';
+	    event.preventDefault();
+	    return false;
+	  });
+
+	  socket.on('broadcastMessage', (msg) => {
+	  	messages.appendChild(document.createTextNode(msg));
+	  });
+
+	</script>
+</body>
+</html>
