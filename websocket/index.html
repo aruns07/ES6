@@ -37,6 +37,20 @@
 
 	  socket.emit('query', 'all-sockets', (data) => { console.log(data);});
 
+	  //Polling 
+	  function poll() {
+		  fetch('/polling')
+		  	.then((response)=>{
+		  		return response.text()
+		  	})
+		  	.then((txt)=>{
+		  		console.log(txt);
+		  		window.setTimeout(poll, 1);
+		  	});	  	
+	  }
+	  poll();
+
+
 	</script>
 </body>
 </html>
