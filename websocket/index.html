@@ -17,7 +17,7 @@
 	  const inputField = document.querySelector('#m');
 	  const messages = document.querySelector('#messages');
 	  form.addEventListener('submit', (event) => {
-	  	socket.emit('chat message', inputField.value);
+	  	socket.emit('chat message', inputField.value, (data) => { console.log(data);});
 	    inputField.value = '';
 	    event.preventDefault();
 	    return false;
@@ -28,6 +28,14 @@
 	  	li.innerText = msg;
 	  	messages.appendChild(li);
 	  });
+
+	  socket.on('serverMsg', (msg) => {
+	  	let li = document.createElement('li');
+	  	li.innerText = msg;
+	  	messages.appendChild(li);
+	  });
+
+	  socket.emit('query', 'all-sockets', (data) => { console.log(data);});
 
 	</script>
 </body>
