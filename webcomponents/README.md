@@ -13,3 +13,5 @@ Finding :
 
 	Probably because the custom element is defined by an import document.
 
+2. custom elements are inline by default.
+
