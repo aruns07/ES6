@@ -10,3 +10,5 @@ Finding :
 
 	When running form main document script, it is not finding template. May be because current script document doesn't have it.
 
+	Probably because the custom element is defined by an import document.
+
