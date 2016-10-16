@@ -2,6 +2,7 @@
 
 Notes :
 1. Imported html resides in a seperate document.
+2. ::shadow, :host, /deep/ to style shadow elements. https://www.html5rocks.com/en/tutorials/webcomponents/shadowdom-201/
 
 
 Finding :

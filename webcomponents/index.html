@@ -4,11 +4,19 @@
 	<meta charset="utf-8">
 	<link rel="import" href="components/header.html" async/>
 	<link rel="import" href="components/product.html"/>
+	<style>
+		site-header-v1::shadow h1 {
+			color: green;
+		}
+	</style>
 </head>
 <body>
 
 	<site-header></site-header>
 	<site-header-v1></site-header-v1>
+	<site-header-v1>
+		<p><b>user text</b></p>
+	</site-header-v1>
 	<noncomponent-element>Custom tag, not a web component</noncomponent-element>
 	<main>
 
