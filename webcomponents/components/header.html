@@ -1,0 +1,58 @@
+<template>
+	<header>
+		<h1>Header</h1>
+	</header>
+</template>
+<script async>
+	console.log('Header component script : START');
+
+	if (document.currentScript.async) {
+	  console.log("Executing asynchronously");
+	} else {
+	  console.log("Executing synchronously");
+	}
+
+	//V0 Spec of custom element
+	((window, document)=>{
+		//main document, and thisDoc script running in, is different
+		let thisDoc = document.currentScript.ownerDocument;
+
+		let template = thisDoc.querySelector('template').content;
+
+		let CompProto = Object.create(HTMLHeadingElement.prototype);
+
+		CompProto.createdCallback = function() {
+			let shadowRoot = this.createShadowRoot();
+			let element = document.importNode(template, true);
+			shadowRoot.appendChild(element);
+		};
+
+		document.registerElement('site-header', { prototype: CompProto});
+
+	})(window, document);
+
+	//V1 Spec of custom element
+	//New Standard https://html.spec.whatwg.org/multipage/scripting.html#custom-elements
+	((window, document)=>{
+		class SiteHeaderV1 extends HTMLElement {
+			constructor() {
+				// If you define a ctor, always call super() first!
+	    		// This is specific to CE and required by the spec.
+	    		// https://developers.google.com/web/fundamentals/getting-started/primers/customelements
+				super();
+				let thisDoc = document.currentScript.ownerDocument;
+				let template = thisDoc.querySelector('template').content;
+
+				let shadowRoot = this.createShadowRoot();
+				let element = document.importNode(template, true);
+				shadowRoot.appendChild(element);
+
+			}
+		}
+
+		customElements.define('site-header-v1', SiteHeaderV1);		
+	})(window, document);
+
+
+	console.log('Header component script : END');
+</script>
