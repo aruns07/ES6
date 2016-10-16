@@ -41,16 +41,16 @@
 	    		// https://developers.google.com/web/fundamentals/getting-started/primers/customelements
 				super();
 				let thisDoc = document.currentScript.ownerDocument;
-				let template = thisDoc.querySelector('template').content;
-
-				let shadowRoot = this.createShadowRoot();
-				let element = document.importNode(template, true);
-				shadowRoot.appendChild(element);
+				this.template = thisDoc.querySelector('template').content;
 
 			}
 
 			connectedCallback() {
 				console.log('Element inserted');
+				
+				let shadowRoot = this.createShadowRoot();
+				let element = document.importNode(this.template, true);
+				shadowRoot.appendChild(element);
 			}
 
 			//disconnectedCallback() will never be called if the user closes the tab.
