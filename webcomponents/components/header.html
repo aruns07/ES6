@@ -48,6 +48,21 @@
 				shadowRoot.appendChild(element);
 
 			}
+
+			connectedCallback() {
+				console.log('Element inserted');
+			}
+
+			//disconnectedCallback() will never be called if the user closes the tab.
+			disconnectedCallback() {
+				console.log('Element removed');
+			}
+			static get observedAttributes() {
+				return ['name'];
+			}
+			attributeChangedCallback(attrName, oldVal, newVal) {
+				console.log('Attribute ', attrName, ' changed ', oldVal, newVal);
+			}
 		}
 
 		customElements.define('site-header-v1', SiteHeaderV1);		
