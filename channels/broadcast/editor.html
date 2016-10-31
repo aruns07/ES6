@@ -3,14 +3,20 @@
 	<head>
 		<meta charset="utf-8">
 		<title>BroadcastChannel API</title>
+		<style>
+			.editor-input {
+				width: 100%;
+				height: 50vh;
+			}
+		</style>
 	</head>
 	<body>
 		<h1>Editor</h1>
-		<textarea cols="100" id="editor"></textarea>
+		<textarea class="editor-input"></textarea>
 		<script type="text/javascript">
 			(function(){
 				const myBroadcastChannel = new BroadcastChannel('editor');
-				const $editor = document.querySelector('#editor');
+				const $editor = document.querySelector('.editor-input');
 
 				const throttle = (fn, delay) => {
 					let refTimeout;
