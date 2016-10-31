@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>BroadcastChannel API</title>
+	</head>
+	<body>
+		<h1>Editor</h1>
+		<textarea cols="100" id="editor"></textarea>
+		<script type="text/javascript">
+			(function(){
+				const myBroadcastChannel = new BroadcastChannel('editor');
+				const $editor = document.querySelector('#editor');
+
+				const throttle = (fn, delay) => {
+					let refTimeout;
+					return () => {
+						if (!refTimeout) {
+							refTimeout = window.setTimeout(() => {
+												fn();
+												refTimeout = undefined;
+											}, delay);
+						}
+					};
+				};
+
+				const debounce = (fn, delay) => {
+					let refTimeout;
+					return () => {
+
+						if (refTimeout) {
+							window.clearTimeout(refTimeout);
+						}
+
+						refTimeout = window.setTimeout(() => {
+							fn();
+							refTimeout = undefined;
+						}, delay);
+					};
+				};
+
+				$editor.addEventListener('keyup', throttle(()=>{
+					myBroadcastChannel.postMessage($editor.value);
+				}, 1000));
+			})();
+		</script>
+	</body>
+</html>
