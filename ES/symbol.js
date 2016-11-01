@@ -53,4 +53,8 @@ var Car_second =(
 
 let mySecondCar = new Car_second();
 mySecondCar.start(); //Combustion started
-mySecondCar.ignition(); //Combustion started
+mySecondCar.ignition(); //not defined
+
+//Other way to access the ignition method is;
+mySecondCar[Object.getOwnPropertySymbols(Car_second.prototype)[0]]() //Combustion started
+//Here we know which symbol at [0] is the desired one, what if list is long.
