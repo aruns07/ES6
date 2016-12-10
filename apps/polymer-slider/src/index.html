@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<title>Polymer App</title>
+	<script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+	<link rel="import" href="components/polymer-slider.html">
+	<style>
+		.slider-rtl {
+
+	        --slider-font-size: 10px;
+	        --slider-track-color: lightgray;
+	        --slider-status-color: lightblue;
+	        --slider-font-color: black;
+	        --slider-bullet-color: white;
+	        --slider-bullet-highlight-color: gray;
+
+	        width: 50%;
+		}
+	</style>
+</head>
+<body>
+	<h1>Slider Examples</h1>
+	<h2>LTR</h2>
+		<polymer-slider class="slider-ltr" slider-min="1"></polymer-slider>
+	<h2>RTL</h2>
+		<polymer-slider 
+			class="slider-rtl" 
+			slider-rtl="true"
+			slider-options='[{"text":"Excelent", "color":"green"},
+					        {"text":"Very Good", "color":"green"},
+					        {"text":"Good", "color":"green"},
+					        {"text":"Fair", "color":"yellow"},
+					        {"text":"Poor", "color":"red"}]'
+			slider-min="1">
+			</polymer-slider>
+<script type="text/javascript">
+
+	let sliderLtr = document.querySelector('.slider-ltr');
+	sliderLtr.addEventListener('change', function(event){console.log('LTR change', event.detail)});
+
+
+	let sliderRtl = document.querySelector('.slider-rtl');
+	sliderRtl.addEventListener('change', function(event){console.log('RTL change', event.detail)});
+</script>
+
+</body>

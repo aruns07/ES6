@@ -1,0 +1,35 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<dom-module id="polymer-slider">
+
+    <template>
+    <!-- build:cssInline -->
+    
+    <!-- endbuild -->
+
+      <div class="container" id="container">
+        <div class="slider-track">
+          <span class="slider-option" data-value="poor" data-color="red">
+            <label class="slider-option-text">Poor</label>
+          </span>
+          <span class="slider-option" data-value="Fair" data-color="yellow">
+            <label class="slider-option-text">Fair</label>
+          </span>
+          <span class="slider-option" data-value="good" data-color="green">
+            <label class="slider-option-text">Good</label>
+          </span>
+          <span class="slider-option" data-value="very good" data-color="green">
+            <label class="slider-option-text">Very Good</label>
+          </span>
+          <span class="slider-option" data-value="excelent" data-color="green">
+            <label class="slider-option-text">Excelent</label>
+          </span>
+          <span class="slider-status"></span>
+          <span class="slider-bullet" data-role="left" data-currentpos="0"></span>
+          <span class="slider-bullet" data-role="right" data-currentpos="4"></span>
+        </div>
+      </div>
+    </template>
+
+    <script type="text/javascript" src="polymer-slider.js"></script>
+
+</dom-module>
