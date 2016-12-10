@@ -26,7 +26,7 @@ gulp.task('lint', () => {
 
 gulp.task('script', () => {
 	return gulp.src('src/**/*.js')
-			//.pipe(gulpUglifyHarmony())
+			.pipe(gulpUglifyHarmony())
 			.pipe(gulp.dest('dist/'));
 });
 
@@ -44,6 +44,10 @@ gulp.task('inject', () => {
 				  cssInline: {
 				    src: gulp.src('dist/components/polymer-slider.css'),
 				    tpl: '<style>%s</style>'
+				  },
+				  jsInline: {
+				  	src: gulp.src('dist/components/polymer-slider.js'),
+				    tpl: '<script>%s</script>'
 				  }
 				}))
 			.pipe(gulp.dest('dist/components/'));;
