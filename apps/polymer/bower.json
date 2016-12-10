@@ -1,0 +1,20 @@
+{
+  "name": "polymer",
+  "homepage": "https://github.com/aruns07/Playground",
+  "authors": [
+    "Arun Saini <Arun.Saini@akqa.com>"
+  ],
+  "description": "learn polymer",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#2.0-preview"
+  }
+}
