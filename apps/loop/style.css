@@ -1,0 +1,16 @@
+body {
+    margin: 0;
+}
+
+.loader {
+    display: none;
+}
+
+.world {
+    width: 100vw;
+    height: 100vh;
+}
+
+.canvas {
+    width: 100%;
+}
