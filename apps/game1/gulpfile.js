@@ -1,7 +1,13 @@
 const gulp = require('gulp');
 const browserify = require('gulp-browserify');
-const mocha = require('gulp-mocha');
-const browser = require('browser-run');
+const htmlReplace = require('gulp-html-replace');
+
+const tape = require('gulp-tape');
+const tapColorize = require('tap-colorize');
+
+const run = require('browser-run');
+const browser = run({input: 'html'});
+
 const fs = require('fs');
 
 gulp.task('script', () => {
@@ -10,43 +16,49 @@ gulp.task('script', () => {
         .pipe(gulp.dest('bundle'));
 });
 
-gulp.task('test', () => {
-    gulp.src('./test/server/main.js')
-        .pipe(mocha())
-        .once('error', () => {
-            process.exit(1);
-        })
-        .once('end', () => {
-            process.exit();
-        });
+
+gulp.task('test-on-server', () => {
+    return gulp.src('./test/server/main.js')
+        .pipe(tape({
+          reporter: tapColorize()
+        }));
 });
 
+
 gulp.task('test-client-bundle', () => {
-    gulp.src('./test/client/main.js')
+    return gulp.src('./test/client/main.js')
         .pipe(browserify())
         .pipe(gulp.dest('./test/client/bundle'));
 });
 
-gulp.task('test-in-browser', () => {
-/*    gulp.src('./test/client/index.html')
+
+gulp.task('test-inject', ['test-client-bundle'], () => {
+    return gulp.src('./test/client/index.html')
+            .pipe(htmlReplace({
+                  jsInline: {
+                    src: gulp.src('./test/client/bundle/main.js'),
+                    tpl: '<script>%s</script>'
+                  }
+                }))
+            .pipe(gulp.dest('./test/client/bundle/'));;
+});
+
+
+gulp.task('test-in-browser', ['test-inject'], () => {
+    /*gulp.src('./test/client/index.html')
         .pipe(browser({
             input: 'html'
         }))
-        .pipe(process.stdout);
-*/
+        .pipe(process.stdout);*/
 
-
-var run = require('browser-run');
-var browser = run();
-browser.pipe(process.stdout);
-fs.readFile('./test/client/index.html', 'utf8', function (err,data) {
-  if (err) {
-    return console.log(err);
-  }
-  console.log(data);
-  browser.end(data);
-});
-
-
+    browser.pipe(tapColorize()).pipe(process.stdout);
+    fs.readFile('./test/client/bundle/index.html', 'utf8', function (err,data) {
+      if (err) {
+        return console.log(err);
+      }
+      browser.end(data);
+    });
 
 });
+
+gulp.task('test', ['test-on-server', 'test-in-browser'])

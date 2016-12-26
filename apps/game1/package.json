@@ -16,9 +16,11 @@
     "gulp": "^3.9.1",
     "gulp-browserify": "^0.5.1",
     "gulp-eslint": "^3.0.1",
+    "gulp-html-replace": "^1.6.2",
     "gulp-mocha": "^3.0.1",
     "gulp-tape": "0.0.9",
     "mocha": "^3.2.0",
+    "tap-colorize": "^1.2.0",
     "tape": "^4.6.3"
   },
   "devDependencies": {}
