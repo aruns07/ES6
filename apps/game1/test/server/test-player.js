@@ -1,10 +1,10 @@
 module.exports = function(test) {
-  const player = require('../../src/script/player.js');
+  const playerModule = require('../../src/script/player.js');
 
   test('Player introduce.', (assert) => {
     const expected = 'Hello, my name is John';
-    const player1 = player.playerFactory('John');
-    const actual = player.rules.introduce.call(player1);
+    const player1 = playerModule.playerFactory('John');
+    const actual = playerModule.rules.introduce.call(player1);
 
     assert.equal(actual, expected,
       'The player should say "Hello, my name is John"');
@@ -16,9 +16,9 @@ module.exports = function(test) {
 
     t.test('Move left', (assert) => {
       try {
-        const player1 = player.playerFactory('John');
+        const player1 = playerModule.playerFactory('John');
         const expected = -1;
-        const actual = player.rules.moveLeft.call(player1).positionX;
+        const actual = playerModule.rules.moveLeft.call(player1).positionX;
         assert.equal(actual, expected, 'The player x position should be one less');
 
       } catch(err) {
@@ -30,9 +30,9 @@ module.exports = function(test) {
 
     t.test('Move right', (assert) => {
       try {
-        const player1 = player.playerFactory('John');
+        const player1 = playerModule.playerFactory('John');
         const expected = 1;
-        const actual = player.rules.moveRight.call(player1).positionX;
+        const actual = playerModule.rules.moveRight.call(player1).positionX;
 
         assert.equal(actual, expected, 'The player x position should be one more');
 
@@ -46,9 +46,9 @@ module.exports = function(test) {
 
     t.test('Move up', (assert) => {
       try {
-        const player1 = player.playerFactory('John');
+        const player1 = playerModule.playerFactory('John');
         const expected = -1;
-        const actual = player.rules.moveUp.call(player1).positionY;
+        const actual = playerModule.rules.moveUp.call(player1).positionY;
         assert.equal(actual, expected, 'The player y position should be one less');
 
       } catch(err) {
@@ -60,9 +60,9 @@ module.exports = function(test) {
 
     t.test('Move down', (assert) => {
       try {
-        const player1 = player.playerFactory('John');
+        const player1 = playerModule.playerFactory('John');
         const expected = 1;
-        const actual = player.rules.moveDown.call(player1).positionY;
+        const actual = playerModule.rules.moveDown.call(player1).positionY;
 
         assert.equal(actual, expected, 'The player y position should be one more');
 
