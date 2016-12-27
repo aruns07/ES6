@@ -8,7 +8,18 @@ const tapColorize = require('tap-colorize');
 const run = require('browser-run');
 const browser = run({input: 'html'});
 
+
+const eslint = require('gulp-eslint');
+
 const fs = require('fs');
+
+gulp.task('lint', () => {
+    return gulp.src('./src/script/**/*.js')
+            .pipe(eslint())
+            .pipe(eslint.format())
+            .pipe(eslint.failAfterError());
+});
+
 
 gulp.task('script', () => {
     return gulp.src('./src/script/main.js')
