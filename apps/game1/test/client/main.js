@@ -1,22 +1,18 @@
 const test = require('tape');
+const player = require('../../src/script/player.js');
 
 test.onFinish(() => {
   window.close();
 });
 
-test('A passing test', (assert) => {
-
-  assert.pass('This test will pass.');
-
-  assert.end();
-});
 
 test('Assertions with tape.', (assert) => {
-  const expected = 'something to test';
-  const actual = 'something to test';
+  const expected = 'Hello, my name is John';
+  const player1 = player.playerFactory('John');
+  const actual = player1.introduce();
 
   assert.equal(actual, expected,
-    'Given two mismatched values, .equal() should produce a nice bug report');
+    'The player should say "Hello, my name is John"');
 
   assert.end();
 });
