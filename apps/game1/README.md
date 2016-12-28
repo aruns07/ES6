@@ -1,5 +1,15 @@
 # TDD Game
 
+TODO:
+1. UI module multi instance support
+2. current flow is worldUi > playerUi > player. The UI module creates JS level instances of entities. Try the flow starts from JS to UI i.e. player > playerUi > worldUi.
+
+## 28 Dec, 2016
+Code division
+1. An entity has two files, one has in memory representation of the entity without any UI features (e.g. player.js). Second one that is aware of UI, bound to UI interaction and changes the in-memory instance (e.g. playerUi.js).
+2. Every function of in-memory entity must be unit testable on server (without browser).
+3. Functions of UI aware file requrie browser to get unit tested. May be because it is using browser API, or user interaction. Few function may not get unit tested and gets tested under functional testing.
+
 ## 27 Dec, 2016
 Functional programming:
 1. At this point my understanding of mathematical function is 'For an input function always give same one output. Two different input can have same output, but one input will not have two different output irrespective of time, and circumstances'
