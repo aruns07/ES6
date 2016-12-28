@@ -1,4 +1,4 @@
-
+'use strict';
 class Player {
     constructor(name = 'player') {
         this.name = name;
