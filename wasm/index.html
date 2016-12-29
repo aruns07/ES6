@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<head>
+<title>Test ASM and Webassembly</title>
+</head>
+<body>
+    <script>
+        function init() {
+            fetch('add.wasm')
+            .then((binary)=>{
+                return binary.arrayBuffer();
+            })
+            .then((bytes) => {
+                return WebAssembly.compile(bytes);
+            })
+            .then((module) => {
+                return new WebAssembly.Instance(module);
+            }).then((instance) => {
+                console.log(instance);
+                console.log(instance.exports.add(10,20));
+            });
+            
+        }
+        init();
+    </script>
+</body>
