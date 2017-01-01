@@ -11,18 +11,32 @@
 
     const SPEED = 0.05;
     const OFFSET = height / 4;
-    const SCALE_FACTOR = 100;
-    const TRIG_FUNCTION = 'cos';
+    
+    const BASE_RADIUS = 50;
+    const RADIUS_OFFSET = 20;
+
+    const BASE_ALPHA = 0.5;
+    const ALPHA_OFFSET = 0.5;
+
+    const TRIG_FUNCTION = 'sin';
 
     context.translate(0, height);
     context.scale(1, -1);
 
     function render() {
         let y = centerY + Math[TRIG_FUNCTION](angle) * OFFSET;
+        let radius = BASE_RADIUS + Math[TRIG_FUNCTION](angle) * RADIUS_OFFSET;
+        let alpha = BASE_ALPHA + Math[TRIG_FUNCTION](angle) * ALPHA_OFFSET;
 
         context.clearRect(0, 0, width, height);
         context.beginPath();
-        context.arc(centerX, y, 50, 0, Math.PI * 2, false);
+        context.fillStyle = 'rgba(0, 0, 0,' + alpha + ')';
+        context.arc(centerX, y, radius, 0, Math.PI * 2, false);
+        context.fill();
+
+        context.beginPath();
+        context.fillStyle = 'rgba(0, 0, 0, 1)';
+        context.arc(centerX, y, radius / 2, 0, Math.PI * 2, false);
         context.fill();
 
         angle += SPEED;
