@@ -1,4 +1,4 @@
-let gulp = require('gulp'),
+const gulp = require('gulp'),
 	eslint = require('gulp-eslint'),
 	del = require('del'),
 	less = require('gulp-less'),
@@ -10,18 +10,10 @@ let gulp = require('gulp'),
 	htmlReplace = require('gulp-html-replace');
 
 gulp.task('lint', () => {
-	return gulp.src('src/**/*.js')
-			.pipe(eslint({
-				"extends": "eslint:recommended",
-				"parserOptions": {
-					"ecmaVersion": 6
-				},
-				"rules": {
-					"camelcase": 1
-				}
-			}))
-			.pipe(eslint.format())
-			.pipe(eslint.failAfterError());
+    return gulp.src('src/**/*.js')
+            .pipe(eslint())
+            .pipe(eslint.format())
+            .pipe(eslint.failAfterError());	
 });
 
 gulp.task('script', () => {
