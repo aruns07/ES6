@@ -35,9 +35,9 @@ const Util = {
     */
     getPageX: function(event) {
         let ePageX = 0;
-        if (event.type === 'mousemove') {
+        if (event.type.indexOf('mouse') > -1) {
             ePageX = event.pageX;
-        } else if (event.type === 'touchmove') {
+        } else if (event.type.indexOf('touch') > -1) {
             let touchList = event.changedTouches;
             let index = 0;
             let meanPageX = 0;
