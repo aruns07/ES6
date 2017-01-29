@@ -1,0 +1,69 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="ce-rating">
+    <template>
+        <style>
+            .rate {
+                width: 40px;
+                height: 40px;
+                border: 1px solid black;
+                border-radius: 20px;
+                display: inline-block;
+                padding: 10px;
+                box-sizing: border-box;
+                text-align: center;
+            }
+
+            slot[name='note'] {
+                display: block;
+            }
+        </style>
+        <dom-if if="{{showHeading}}">
+            <template>
+                <h1>{{heading}}</h1>
+            </template>
+        </dom-if>
+        
+        <dom-repeat items={{options}}>
+            <template>
+                <span class="rate">{{item}}</span>
+            </template>
+        </dom-repeat>
+        <div>
+            <slot name="note"></slot>
+        </div>
+    </template>
+    <script type="text/javascript">
+        class CeRating extends Polymer.Element {
+            static get is() {
+                return 'ce-rating';
+            };
+
+            static get config() {
+                return {
+                    properties: {
+                        showHeading : {type: Boolean},
+                        heading : {type: String},
+                        options : {type: Array, value: [1,2,3]}
+                    }
+                };
+            };
+
+            constructor() {
+                super();
+            };
+
+            disconnectedCallback() {
+                super.disconnectedCallback();
+            };
+        }
+
+        customElements.define('ce-rating', CeRating);
+    </script>
+</dom-module>
+<!--
+    1. Try slot
+    2. Closed component and related things
+
+-->
+

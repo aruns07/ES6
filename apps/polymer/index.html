@@ -4,11 +4,15 @@
 	<title>Polymer App</title>
 	<script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
 	<link rel="import" href="components/hello-message.html">
+    <link rel="import" href="components/ce-rating.html">
 
 </head>
 <body>
 	<div id="root">
-		<hello-message name="world">
+		<hello-message name="world"></hello-message>
+        <ce-rating heading="Movie Rating" showHeading="false">
+            <span slot="note">1 minimum, 3 maximum</span>
+        </ce-rating>
 	</div>
 
 </body>
