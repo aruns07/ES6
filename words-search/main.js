@@ -1,10 +1,18 @@
 
+/*Input 1
 var matrixSize = "4,5";
 var matrix = "A,P,P,L,E,N,-,E,D,T,T,-,T,E,E,T,O,A,Z,B";
 var dictString = "APPLE,JAVA,COMPUTER,DESK,TEA,TOP,ANT,BEEP,TO,TEST";
+*/
 
-const matrixRows = parseInt(matrixSize[0], 10);
-const matrixColumns = parseInt(matrixSize[2], 10);
+/* Input 2*/
+var matrixSize = "12,8";
+var matrix = "G,D,X,I,P,L,K,I,A,S,C,O,U,T,L,P,N,A,S,A,M,A,Z,N,E,A,H,L,N,M,L,R,U,N,I,A,A,C,K,T,B,S,M,N,Q,K,L,O,F,Y,L,S,I,O,N,C,T,P,A,D,J,T,V,U,C,R,I,O,C,G,A,L,K,E,O,W,T,N,E,L,N,T,I,N,S,A,G,U,Y,M,N,E,S,G,I,K";
+var dictString = "NAINITAL,LANSDOWNE,SHIMLA,KULLU,MANALI,OOTY,SHILLONG,GANGTOK";
+
+const matrixSizeArray = matrixSize.split(',');
+const matrixRows = parseInt(matrixSizeArray[0], 10);
+const matrixColumns = parseInt(matrixSizeArray[1], 10);
 const matrixLogestDirection = matrixRows > matrixColumns ? matrixRows : matrixColumns;
 
 // To optimize coparison with 16bits
@@ -20,7 +28,7 @@ const wordLenthEvenBufferSize = 1;//byte
 const foundRowIndexBufferSize = 2;//byte
 const foundColIndexBufferSize = 2;//byte
 const dictWordTrueLengthBufferSize = 2;//bytes
-const dictOneWordBufferSize = (maxWordLength * 2) + (foundBufferSize + wordLenthEvenBufferSize + dictWordTrueLengthBufferSize);
+const dictOneWordBufferSize = (maxWordLength * 2) + (foundBufferSize + wordLenthEvenBufferSize + foundRowIndexBufferSize + foundColIndexBufferSize + dictWordTrueLengthBufferSize);
 
 const wordLenthEvenBufferOffset = foundBufferSize;
 const foundRowIndexBufferOffset = wordLenthEvenBufferOffset + wordLenthEvenBufferSize;
@@ -48,18 +56,18 @@ function populateDictionayBuffer() {
         dictArray[dictWordIndex].foundRowIndex = new Uint16Array(
                                                         dictBuffer, 
                                                         wordBufferOffset + foundRowIndexBufferOffset, 
-                                                        foundRowIndexBufferSize);
+                                                        foundRowIndexBufferSize / 2);
         
         dictArray[dictWordIndex].foundColIndex = new Uint16Array(
                                                         dictBuffer, 
                                                         wordBufferOffset + foundColIndexBufferOffset, 
-                                                        foundColIndexBufferSize);
+                                                        foundColIndexBufferSize / 2);
 
         //start offset of Uint16Array should be a multiple of 2
         var trueLength = dictArray[dictWordIndex].trueLength = new Uint16Array(
                                                                         dictBuffer, 
                                                                         wordBufferOffset + dictWordTrueLengthBufferOffset, 
-                                                                        dictWordTrueLengthBufferSize);
+                                                                        dictWordTrueLengthBufferSize / 2);
         var word = dictArray[dictWordIndex].word = new Uint8Array(
                                                             dictBuffer, 
                                                             wordBufferOffset + dictOneWordBufferOffset, 
@@ -71,7 +79,7 @@ function populateDictionayBuffer() {
                                                                         maxWordLength);
 
         trueLength[0] = dictArray[dictWordIndex].length;
-        eventLength[0] = trueLength[0] % 2 === 0 ? 1 : 0;
+        evenLength[0] = trueLength[0] % 2 === 0 ? 1 : 0;
 
         var charIndex = 0
         for ( charIndex ; charIndex < trueLength[0]; charIndex++) {
@@ -79,7 +87,7 @@ function populateDictionayBuffer() {
         }
 
         var reverseCharIndex = 0;
-        for ( charIndex - 1; charIndex > -1; charIndex--, reverseCharIndex++) {
+        for ( charIndex--; charIndex > -1; charIndex--, reverseCharIndex++) {
             wordReverse[reverseCharIndex] = word[charIndex];
         }
     }
@@ -97,7 +105,7 @@ const matrixWordInvalidBufferSize = 1;//byte
 const matrixWordDirectBufferSize = 1;//byte
 const matrixWordLengthBufferSize = 2;//byte
 const matrixOneWordBufferSize = maxWordLength + matrixWordInvalidBufferSize + matrixWordDirectBufferSize + matrixWordLengthBufferSize;
-const matrixBuffer = new ArrayBuffer(matrixOneWordBufferSize * matrixWordCount));
+const matrixBuffer = new ArrayBuffer(matrixOneWordBufferSize * matrixWordCount);
 
 const matrixWordDirectBufferOffset = matrixWordInvalidBufferSize;
 const matrixWordLengthBufferOffset = matrixWordDirectBufferOffset + matrixWordDirectBufferSize;
@@ -120,7 +128,7 @@ function createWordDown(rowIndex, columnIndex, matrixBufferOffset) {
         var wordLength = new Uint16Array(
                                 matrixBuffer, 
                                 matrixBufferOffset + matrixWordLengthBufferOffset,
-                                matrixWordLengthBufferSize);
+                                matrixWordLengthBufferSize / 2);
         wordLength[0] = matrixRows;
 
         var word = new Uint8Array(
@@ -145,7 +153,7 @@ function createWordRight(rowIndex, columnIndex, matrixBufferOffset) {
         var wordLength = new Uint16Array(
                                 matrixBuffer, 
                                 matrixBufferOffset + matrixWordInvalidBufferSize + matrixWordDirectBufferSize,
-                                matrixWordLengthBufferSize);
+                                matrixWordLengthBufferSize / 2);
         wordLength[0] = matrixColumns;
 
         var word = new Uint8Array(
@@ -170,7 +178,7 @@ function createWordDiagonalRight(rowIndex, columnIndex, matrixBufferOffset) {
         var wordLength = new Uint16Array(
                                 matrixBuffer, 
                                 matrixBufferOffset + matrixWordInvalidBufferSize + matrixWordDirectBufferSize,
-                                matrixWordLengthBufferSize);
+                                matrixWordLengthBufferSize / 2);
         wordLength[0] = 0;//Will increment
 
         var word = new Uint8Array(
@@ -198,7 +206,7 @@ function createWordDiagonalLeft(rowIndex, columnIndex, matrixBufferOffset) {
         var wordLength = new Uint16Array(
                                 matrixBuffer, 
                                 matrixBufferOffset + matrixWordInvalidBufferSize + matrixWordDirectBufferSize,
-                                matrixWordLengthBufferSize);
+                                matrixWordLengthBufferSize / 2);
         wordLength[0] = 0;//Will increment
 
         var word = new Uint8Array(
@@ -260,11 +268,11 @@ function populateWordSpace() {
 }
 
 
-function storeFoundWordInfo(dictIndex, matrixWordOffset, foundIndex) {
-    dictArray[dictIndex].found = 1;
+function storeFoundWordInfo(dictOffset, matrixOffset, foundIndex) {
+
 }
 
-function searchWordIn(dictWord, matrixWord, dictLength, matrixLenght) {
+function searchArrayIn(dictWord, matrixWord, dictLength, matrixLenght) {
     var dictCharIndex = 0;
     var matrixCharIndex = 0;
     var foundIndex = -1;
@@ -298,17 +306,89 @@ function searchWordIn(dictWord, matrixWord, dictLength, matrixLenght) {
     return -1;
 }
 
+function searchWithByteOptim(dictBufferOffset, dictWordOffset,  matrixWordOffset) {
+    var dictWord8 = [],
+        dictWord16 = [],
+        dictTrueLength = [],
+        dictEventLength = [],
+        matrixWord8 = [],
+        matrixWord16 = [],
+        foundIndex = -1;
+
+
+    dictTrueLength = new Uint16Array(
+                        dictBuffer, 
+                        dictBufferOffset + dictWordTrueLengthBufferOffset, 
+                        dictWordTrueLengthBufferSize / 2);
+
+    dictEventLength = new Uint8Array(
+                            dictBuffer, 
+                            dictBufferOffset + wordLenthEvenBufferOffset,
+                            wordLenthEvenBufferSize);
+
+    dictWord8 = new Uint8Array(
+                    dictBuffer, 
+                    dictWordOffset, 
+                    maxWordLength);
+    matrixWord8 = new Uint8Array(
+                        matrixBuffer, 
+                        matrixWordOffset,
+                        maxWordLength);
+
+    dictWord16 = new Uint16Array(
+                    dictBuffer, 
+                    dictWordOffset, 
+                    maxWordLength / 2);
+
+    matrixWord16 = new Uint16Array(
+                        matrixBuffer, 
+                        matrixWordOffset,
+                        maxWordLength / 2);
+
+    if (dictEventLength[0]) {
+        foundIndex = searchArrayIn(dictWord16, matrixWord16, dictTrueLength[0] / 2, maxWordLengthHalf);
+        foundIndex *= 2;
+    } else {
+        dictWordLengthHalf = (dictTrueLength[0] - 1) / 2;
+        foundIndex = searchArrayIn(dictWord16, matrixWord16, dictWordLengthHalf, maxWordLengthHalf);
+        foundIndex *= 2;
+
+        
+        if (foundIndex > -1) {
+            var lastCharIndex = dictTrueLength[0] - 1;
+            if (dictWord8[lastCharIndex] !== matrixWord8[foundIndex + lastCharIndex]) {
+                foundIndex = -1;
+            }
+        }
+    }
+
+    if (foundIndex < 0) {
+        foundIndex = searchArrayIn(dictWord8, matrixWord8, dictTrueLength[0], maxWordLength);
+    }
+    return foundIndex;
+}
+
 function searchInMatrix() {
     var dictWord = [];
+    var dictBufferOffset = 0;
+    var dictTrueLength = [];
     var matrixWordInValid = [];
     var matrixWordStructOffSet = 0;
     var matrixWordLength = 0;
     var matrixWord = [];
     var foundIndex = -1;
     var wordLengthHalf = 0;
+
+    var foundCount = 0;
     for (var dictIndex=0; 
             dictIndex < dictArray.length;// && dictArray[dictIndex].found === 0; 
-            dicIndex++) {
+            dictIndex++) {
+        dictBufferOffset = dictOneWordBufferSize * dictIndex;
+
+        dictTrueLength = new Uint16Array(
+                                dictBuffer, 
+                                dictBufferOffset + dictWordTrueLengthBufferOffset, 
+                                dictWordTrueLengthBufferSize / 2);
         //dictWord = dictArray[dictIndex].word;
         for (var matrixIndex = 0; matrixIndex < matrixWordCount; matrixIndex++) {
             matrixWordStructOffSet = matrixOneWordBufferSize * matrixIndex;
@@ -319,50 +399,28 @@ function searchInMatrix() {
             matrixWordLength = new Uint16Array(
                                         matrixBuffer, 
                                         matrixWordStructOffSet + matrixWordLengthBufferOffset,
-                                        matrixWordLengthBufferSize);
+                                        matrixWordLengthBufferSize / 2);
 
-            if (matrixWordInValid[0] !== 1 && matrixWordLength[0] > dictArray[dictIndex].trueLength) {
+            if (matrixWordInValid[0] !== 1 && matrixWordLength[0] >= dictTrueLength[0]) {
+                foundIndex = searchWithByteOptim(dictBufferOffset, dictBufferOffset + dictOneWordBufferOffset,  matrixWordStructOffSet + matrixOneWordBufferOffset);
 
-                    
-                dictWord = new Uint16Array(
-                                    matrixBuffer, 
-                                    matrixWordStructOffSet + matrixOneWordBufferOffset,
-                                    maxWordLength);
-                matrixWord = new Uint16Array(
-                                    matrixBuffer, 
-                                    matrixWordStructOffSet + matrixOneWordBufferOffset,
-                                    maxWordLength);
-
-                if (dictArray[dictIndex].evenLength) {
-                    foundIndex = searchWordIn(dictWord, matrixWord, dictArray[dictIndex].trueLength / 2, maxWordLengthHalf);
-                    foundIndex * 2;
-                } else {
-                    dictWordLengthHalf = (dictArray[dictIndex].trueLength - 1) / 2;
-                    foundIndex = searchWordIn(dictWord, matrixWord, dictWordLengthHalf, maxWordLengthHalf);
-                    foundIndex * 2;
-                    if (foundIndex > -1) {
-                        matrixWord = new Uint8Array(
-                                            matrixBuffer, 
-                                            matrixWordStructOffSet + matrixOneWordBufferOffset,
-                                            maxWordLength);
-                        var lastCharIndex = dictArray[dictIndex].trueLength - 1;
-                        if (dictArray[dictIndex].word[lastCharIndex] !== matrixWord[(foundIndex * 2) + lastCharIndex]) {
-                            foundIndex = -1;
-                            dictWord = new Uint8Array(
-                                                matrixBuffer, 
-                                                matrixWordStructOffSet + matrixOneWordBufferOffset,
-                                                maxWordLength);
-                            foundIndex = searchWordIn(dictWord, matrixWord, dictWordLengthHalf, maxWordLength);
-                        }
-                        
-                    }
+                if (foundIndex === -1) {
+                    foundIndex = searchWithByteOptim(dictBufferOffset, dictBufferOffset + dictReverseWordBufferOffset,  matrixWordStructOffSet + matrixOneWordBufferOffset);
                 }
+            }
+
+            if (foundIndex > -1) {
+                matrixWordLength[0] -= dictTrueLength[0];
+                foundCount++;
+                break;
             }
         }
 
     }
+    console.log('Found', foundCount);
 }
 
 populateDictionayBuffer();
 populateWordSpace();
 searchInMatrix();
+console.log('Code End');
