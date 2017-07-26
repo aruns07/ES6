@@ -21,8 +21,9 @@ class Vector {
     }
 
     set angle(value) {
-        this._x = Math.cos(value) * this.length;
-        this._y = Math.sin(value) * this.length;
+        let length = this.length;
+        this._x = Math.cos(value) * length;
+        this._y = Math.sin(value) * length;
     }
 
     get angle() {
@@ -54,14 +55,14 @@ class Vector {
         return new Vector(this._x / value, this._y / value);
     }
 
-    addTo(value) {
-        this._x = this._x + value;
-        this._y = this._y + value;
+    addTo(vector) {
+        this._x = this._x + vector.x;
+        this._y = this._y + vector.y;
     }
 
-    subtractFrom(value) {
-        this._x = this._x - value;
-        this._y = this._y - value;
+    subtractFrom(vector) {
+        this._x = this._x - vector.x;
+        this._y = this._y - vector.y;
     }
 
     multiplyBy(value) {
