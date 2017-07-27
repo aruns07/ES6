@@ -1,8 +1,11 @@
+import {Particle} from './particle.js';
+
 (function() {
+
     let canvas = document.querySelector('#canvas'),
         context = canvas.getContext('2d'),
         width = canvas.width = window.innerWidth,
-        height = canvas.height = window.innerHeight;
+        height = canvas.height = window.innerHeight,
         particles = [],
         particleCount = 150;
 
