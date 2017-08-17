@@ -10,7 +10,7 @@ let particle;
 for (let index = 0; index < particleCount; index++) {
     particle = new Particle(width/2, height/2, Math.random() * 10, Math.random() * Math.PI * 2);
     particle.radius = Math.random() * 10 * 5;
-    particle.accelerate(gravity);
+    particle.accelerate = gravity;
     particles.push(particle);
 }
 

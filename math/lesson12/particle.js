@@ -10,7 +10,7 @@ export class Particle {
         this.radius = 5;
     }
 
-    accelerate(value) {
+    set accelerate(value) {
         this.acceleration = value;
     }
 
