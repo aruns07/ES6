@@ -8,7 +8,6 @@ export class Particle {
         this.velocity.angle = directionAngle;
         this.acceleration = new Vector(0, 0);
         this.radius = 5;
-        this.friction = new Vector(0, 0);
     }
 
     set accelerate(value) {
@@ -18,12 +17,5 @@ export class Particle {
     update() {
         this.position.addTo(this.velocity);
         this.velocity.addTo(this.acceleration);
-
-        if (this.velocity.length > this.friction.length) {
-            this.friction.angle = this.velocity.angle;
-            this.velocity.subtractFrom(this.friction);
-        } else {
-            this.velocity.length = 0;
-        }
     }
 }
