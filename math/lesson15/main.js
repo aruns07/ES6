@@ -9,6 +9,11 @@ const point = new Vector(width/2, height/2);
 const springConstant = 0.05;
 let forceVector;
 
+window.addEventListener('mousemove', (event) => {
+    point.x = event.clientX;
+    point.y = event.clientY;
+});
+
 const update = () => {
     context.clearRect(0, 0, width, height);
 
