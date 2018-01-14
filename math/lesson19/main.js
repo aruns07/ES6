@@ -2,23 +2,23 @@ import {canvas, context, width, height} from '../canvas.js';
 import * as util from '../util.js';
 
 const p0 = {
-    x: 100,
-    y: 200
+    x: util.randomRange(0, width),
+    y: util.randomRange(0, height)
 };
 
 const p1 = {
-    x: 200,
-    y: 100
+    x: util.randomRange(0, width),
+    y: util.randomRange(0, height)
 };
 
 const p2 = {
-    x: 500,
-    y: 700
+    x: util.randomRange(0, width),
+    y: util.randomRange(0, height)
 };
 
 const p3 = {
-    x: 900,
-    y: 200
+    x: util.randomRange(0, width),
+    y: util.randomRange(0, height)
 };
 
 context.beginPath();

@@ -33,3 +33,7 @@ export const rangeIntersect = (min1, max1, min2, max2) => {
 export const inRange = (value, min, max) => {
     return value >= Math.min(min, max) && value <= Math.max(min, max);
 };
+
+export const randomRange = (min, max) => {
+    return Math.random() * (max - min) + min;
+};
