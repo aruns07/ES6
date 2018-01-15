@@ -37,3 +37,15 @@ export const inRange = (value, min, max) => {
 export const randomRange = (min, max) => {
     return Math.random() * (max - min) + min;
 };
+
+export const quadraticBezier = (p1, p2, p3, t) => {
+    let pFinal = {x:0, y:0};
+    pFinal.x = (Math.pow(t, 2) * (p3.x - 2 * p2.x + p1.x))
+                + (2 * t * (p2.x - p1.x))
+                + p1.x;
+    
+    pFinal.y = (Math.pow(t, 2) * (p3.y - 2 * p2.y + p1.y))
+                + (2 * t * (p2.y - p1.y))
+                + p1.y;
+    return pFinal;
+};
