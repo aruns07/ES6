@@ -1,1 +1,2 @@
-import './quadraticBezier.js';
+//import './quadraticBezier.js';
+import './qubicBezier.js';
