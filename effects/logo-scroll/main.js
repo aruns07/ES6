@@ -1,61 +1,70 @@
 const DARK_BG_SECTION_CLASS = 'color-dark';
 
-const sectionsDOM = document.querySelectorAll('section');
-const windowScrollY = window.scrollY;
-const sectionsData = Array.prototype.map.call(sectionsDOM, (sectionDOM) => {
-                            const isDark = sectionDOM.classList.contains(DARK_BG_SECTION_CLASS);
-                            const sectionBoxProperty = sectionDOM.getBoundingClientRect();
-                            const top = sectionBoxProperty.top + windowScrollY;
-                            const height = sectionBoxProperty.height;
+class Logo {
+    constructor() {
+        this.logoDarkClipDOM = document.querySelector('#logo-dark-mask rect');
+        this.logoLightClipDOM = document.querySelector('#logo-light-mask rect');
+        const logoBoundingBox = document.querySelector('.logo').getBoundingClientRect();
+        this.logoBox = {
+            start: logoBoundingBox.top,
+            end: logoBoundingBox.top + logoBoundingBox.height
+        }
+    }
 
-                            return {
-                                isDark,
-                                start: top,
-                                end: top + height,
-                                sectionDOM
-                            };
-                        });
+    resizeClipRect(sectionIsDark, sectionIntersectingLogoAtDistance) {
+        if (sectionIsDark) {
+            this.logoLightClipDOM.setAttribute('y', sectionIntersectingLogoAtDistance);
+            this.logoLightClipDOM.setAttribute('height', this.logoBox.end - sectionIntersectingLogoAtDistance);
 
+            this.logoDarkClipDOM.setAttribute('y', 0);
+            this.logoDarkClipDOM.setAttribute('height', sectionIntersectingLogoAtDistance);
+        } else {
+            this.logoDarkClipDOM.setAttribute('y', sectionIntersectingLogoAtDistance);
+            this.logoDarkClipDOM.setAttribute('height', this.logoBox.end - sectionIntersectingLogoAtDistance);
 
-const logoDarkClipDOM = document.querySelector('#logo-dark-mask rect');
-const logoLightClipDOM = document.querySelector('#logo-light-mask rect');
-const logoBoundingBox = document.querySelector('.logo').getBoundingClientRect();
-const logoBox = {
-    start: logoBoundingBox.top,
-    end: logoBoundingBox.top + logoBoundingBox.height
-}
-
-
-function resizeClipRect(sectionIsDark, sectionIntersectingLogoAtDistance) {
-    if (sectionIsDark) {
-        logoLightClipDOM.setAttribute('y', sectionIntersectingLogoAtDistance);
-        logoLightClipDOM.setAttribute('height', logoBox.end - sectionIntersectingLogoAtDistance);
-
-        logoDarkClipDOM.setAttribute('y', 0);
-        logoDarkClipDOM.setAttribute('height', sectionIntersectingLogoAtDistance);
-    } else {
-        logoDarkClipDOM.setAttribute('y', sectionIntersectingLogoAtDistance);
-        logoDarkClipDOM.setAttribute('height', logoBox.end - sectionIntersectingLogoAtDistance);
-
-        logoLightClipDOM.setAttribute('y', 0);
-        logoLightClipDOM.setAttribute('height', sectionIntersectingLogoAtDistance);
+            this.logoLightClipDOM.setAttribute('y', 0);
+            this.logoLightClipDOM.setAttribute('height', sectionIntersectingLogoAtDistance);
+        }
     }
 }
 
-function findSectionLogoIntersection() {
+function captureSectionsData() {
+    const sectionsDOM = document.querySelectorAll('section');
     const windowScrollY = window.scrollY;
+    const sectionsData = Array.prototype.map.call(sectionsDOM, (sectionDOM) => {
+                                const isDark = sectionDOM.classList.contains(DARK_BG_SECTION_CLASS);
+                                const sectionBoxProperty = sectionDOM.getBoundingClientRect();
+                                const top = sectionBoxProperty.top + windowScrollY;
+                                const height = sectionBoxProperty.height;
+
+                                return {
+                                    isDark,
+                                    start: top,
+                                    end: top + height,
+                                    sectionDOM
+                                };
+                            });
+    return sectionsData;
+}
+
+function paintSectionLogoIntersection(logo, sectionsData) {
+    const windowScrollY = window.scrollY;
+    const logoBox = logo.logoBox;
     for (let section of sectionsData ) {
         const sectionViewPortStart = section.start - windowScrollY;
         const sectionViewPortEnd = section.end - windowScrollY;
         if ( sectionViewPortStart > logoBox.start && sectionViewPortStart <= logoBox.end) {
             const sectionIntersectingLogoAtDistance = sectionViewPortStart - logoBox.start;
-            resizeClipRect(section.isDark, sectionIntersectingLogoAtDistance);
+            logo.resizeClipRect(section.isDark, sectionIntersectingLogoAtDistance);
             return false;
         } else if (logoBox.start > sectionViewPortStart && logoBox.end < sectionViewPortEnd) {
-            resizeClipRect(section.isDark, 0);
+            logo.resizeClipRect(section.isDark, 0);
             return false;
         }
     };
 }
 
-window.onscroll = findSectionLogoIntersection;
+const logo = new Logo();
+const sectionsData = captureSectionsData();
+
+window.onscroll = () => { paintSectionLogoIntersection(logo, sectionsData); };
